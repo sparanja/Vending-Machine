@@ -35,3 +35,6 @@ Complete Backend Design of a Beverage Vending Machine written in C++
 * Things to improve
       * Use of generics to create modular code.
       * Better validation and algoritms for search.
+* RUN INSTRUCTIONS:
+                   * Go to Debug/ folder.
+                   * Run Vending Machine.exe
