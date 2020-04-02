@@ -37,6 +37,7 @@ public:
 	vector<string> splitString(string str, char delim);
 	int exists(Beverage beverage);
 	bool isValid(Drink_Size size, int calories, int price, int quantity);
+	vector<Beverage> swap_and_remove(vector<Beverage>& beverage, int index);
 
 	//CRUD Operations
 	void create(bool isUpdate);
@@ -46,7 +47,8 @@ public:
 	void reset();
 	void printItems();
 	void printItem(Beverage bev);
-	void getByID();
+	void getByID(bool isDelete);
 	void deleteAll();
+	void deleteByID();
 };
 

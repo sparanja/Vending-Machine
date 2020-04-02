@@ -120,13 +120,13 @@ void ResourceManager::printItem(Beverage bev) {
 			<< bev.get_size() << " | " << bev.get_calories() << " | " << bev.get_price() << endl;
 }
 
-void ResourceManager::getByID()
+void ResourceManager::getByID(bool isDelete)
 {
 	try
 	{
 		string params;
 		cout << "::::::::::::::::::::::::::::::::::\n";
-		cout << "To view details of an item, enter ID in the format below:\n";
+		cout << "To view/delete an item, enter ID in the format below:\n";
 		cout << "BRAND_NAME  SIZE(1-3)" << endl;
 		cin >> ws;
 
@@ -144,14 +144,18 @@ void ResourceManager::getByID()
 		if (index != -1) {
 			cout << "SUCCESS:: This requested item was found:" << endl;
 			printItem(availableBeverages[index]);
+			if (isDelete) {
+				swap_and_remove(availableBeverages, index);
+				cout << "Successfully deleted item!" << endl;
+			}
 		}
 		else {
 			cout << "ERROR:: The requested item was not found!" << endl;
 		}
 	}
-	catch (const std::exception&)
+	catch (exception e)
 	{
-
+		cout << "Exception occured while parsing the values" << e.what();
 	}
 	
 }
@@ -160,6 +164,11 @@ void ResourceManager::deleteAll()
 {
 	availableBeverages.clear();
 	cout << "Successfully deleted all contents in the datastore!" << endl;
+}
+
+void ResourceManager::deleteByID()
+{
+	getByID(true);
 }
 
 /*
@@ -278,7 +287,7 @@ int ResourceManager::getRandom(int min, int max) {
 /*
 	Deletion from the in-memory cache datastore.
 */
-vector<Beverage> swap_and_remove(vector<Beverage>& beverage, int index) {
+vector<Beverage> ResourceManager::swap_and_remove(vector<Beverage>& beverage, int index) {
 	int listLen = beverage.size();
 	Beverage temp = beverage[index];
 	beverage[index] = beverage[listLen - 1];

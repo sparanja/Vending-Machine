@@ -18,7 +18,7 @@ void maintain(ResourceManager*& resources) {
         try
         {
             std::cout << "Choose Operation:\n0.Exit\n1.Create\n2.Update\n3.Delete\n4.Reset\n5.Get All"
-                         "\n6. Get By ID\n7.Delete All";
+                         "\n6. Get By ID\n7.Delete All\n8.Delete By ID";
             getline(cin, codeStr, '\n');
             code = stoi(codeStr);
             switch (code) {
@@ -34,9 +34,11 @@ void maintain(ResourceManager*& resources) {
                 break;
             case 5: resources->printItems();
                 break;
-            case 6: resources->getByID();
+            case 6: resources->getByID(false);
                 break;
             case 7: resources->deleteAll();
+                break;
+            case 8: resources->deleteByID();
                 break;
             default:
                 std::cout << "Choice doesn't exist. Please re-enter choice.";
