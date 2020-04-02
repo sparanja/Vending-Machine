@@ -25,7 +25,6 @@ public:
 	static ResourceManager* getInstance();
 	void fillMachine();
 	string getResourceStatus();
-	void printItems();
 	void viewItemSet();
 	void buyItems();
 	void rechargeAccount();
@@ -45,5 +44,9 @@ public:
 	void update();
 	void delete_item();
 	void reset();
+	void printItems();
+	void printItem(Beverage bev);
+	void getByID();
+	void deleteAll();
 };
 

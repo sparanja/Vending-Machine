@@ -103,11 +103,63 @@ void ResourceManager::fillItems(vector<string>& brand_labels, vector<Drink_Size>
 
 void ResourceManager::printItems() {
 
+	if (availableBeverages.size() == 0)
+		cout << "There are 0 items in the store!" << endl;
+
 	for (Beverage bev : availableBeverages) {
 		std::cout << "BRAND_NAME | DESCRIPTION | QUANTITY | SIZE | CALORIES | PRICE" << endl;
 		std::cout << bev.get_brand_name() << " | " << bev.get_description() << " | " << bev.get_quantity() << " | "
 			<< bev.get_size() << " | " << bev.get_calories() << " | " << bev.get_price() << endl;
 	}
+}
+
+void ResourceManager::printItem(Beverage bev) {
+
+	std::cout << "BRAND_NAME | DESCRIPTION | QUANTITY | SIZE | CALORIES | PRICE" << endl;
+	std::cout << bev.get_brand_name() << " | " << bev.get_description() << " | " << bev.get_quantity() << " | "
+			<< bev.get_size() << " | " << bev.get_calories() << " | " << bev.get_price() << endl;
+}
+
+void ResourceManager::getByID()
+{
+	try
+	{
+		string params;
+		cout << "::::::::::::::::::::::::::::::::::\n";
+		cout << "To view details of an item, enter ID in the format below:\n";
+		cout << "BRAND_NAME  SIZE(1-3)" << endl;
+		cin >> ws;
+
+		getline(cin, params, '\n');
+		vector<string> paramList = ResourceManager::splitString(params, ' ');
+		if (paramList.size() < 2) {
+			cout << "ERROR: Issue with parsing, please check if a parameter is missing." << endl;
+			return;
+		}
+
+		string dummy = "";
+		Drink_Size drinkSize = ResourceManager::getDrinkSize(stoi(paramList[1]));
+		Beverage beverage(paramList[0], dummy, 1, drinkSize, 0, 0);
+		int index = ResourceManager::exists(beverage);
+		if (index != -1) {
+			cout << "SUCCESS:: This requested item was found:" << endl;
+			printItem(availableBeverages[index]);
+		}
+		else {
+			cout << "ERROR:: The requested item was not found!" << endl;
+		}
+	}
+	catch (const std::exception&)
+	{
+
+	}
+	
+}
+
+void ResourceManager::deleteAll()
+{
+	availableBeverages.clear();
+	cout << "Successfully deleted all contents in the datastore!" << endl;
 }
 
 /*
@@ -130,7 +182,7 @@ void ResourceManager::viewItemSet()
 		}
 	}
 	catch (exception e) {
-
+		cout << "Exception occured while parsing the values" << e.what();
 	}
 }
 
@@ -181,7 +233,7 @@ void ResourceManager::buyItems()
 			Beverage savedState = availableBeverages[index];
 			paramList.clear();
 			if (availableBeverages[index].get_quantity() == 0) {
-				cout << "This item does not exist in the store. Please try another item!";
+				cout << "This item is out of stock in the store. Please try another item!";
 				return;
 			}
 			paramList = ResourceManager::converToParams(availableBeverages[index], type);
@@ -195,7 +247,7 @@ void ResourceManager::buyItems()
 		}
 	}
 	catch (exception e) {
-		cout << "Exception occured while parsing the values";
+		cout << "Exception occured while parsing the values" << e.what();
 	}
 }
 
@@ -258,7 +310,7 @@ bool ResourceManager::isValid(Drink_Size size, int calories, int price, int quan
 		valid = false;
 	else if (size < 1 || size > 3)
 		valid = false;
-	else if (price < 0 || price > 9)
+	else if (price < 0 || price > 27)
 		valid = false;
 	else if (quantity < 0 || quantity > 5)
 		valid = false;
@@ -276,14 +328,15 @@ void ResourceManager::update(vector<string>& paramList, bool isUpdate) {
 		int price = stoi(paramList[6]);
 		int quantity = stoi(paramList[3]);
 		Beverage beverage;
-		if (!ResourceManager::isValid(size, calories, price, quantity)) {
-			cout << "ERROR:: The entered parameters are invalid or out of range" << endl;
-			return;
-		}
 
 		if (!isUpdate) {
 			calories = size * calories;
 			price = size * price;
+		}
+
+		if (!ResourceManager::isValid(size, calories, price, quantity)) {
+			cout << "ERROR:: The entered parameters are invalid or out of range" << endl;
+			return;
 		}
 
 		if (paramList[0] == "Soda") {
@@ -360,7 +413,7 @@ void ResourceManager::create(bool isUpdate) {
 		cout << "::::::::::::::::::::::::::::::::::\n";
 		cout << "To create/update an item, enter 1 space-separated parameters, as shown below:\n";
 		cout << "TYPE(Soda|Coffee|Tea|Fruit|Milk) BRAND_NAME DESCRIPTION(eg:This_is_a_good_description)"
-				" QUANTITY SIZE(1-3) CALORIES(70-160) PRICE(1-9)" << endl;
+				" QUANTITY(1-5) SIZE(1-3) CALORIES(70-160) PRICE(1-9)" << endl;
 		cin >> ws;
 
 		getline(cin, params, '\n');
@@ -450,7 +503,7 @@ vector<string> ResourceManager::splitString(string str, char delim) {
 	Maps int to Drink_Size enum.
 */
 Drink_Size ResourceManager::getDrinkSize(int val) {
-	return (val == 1) ? Small : ((val == 2) ? Medium : Large);
+	return (val == 1) ? Small : ((val == 2) ? Medium : ((val == 3) ? Large : Invalid));
 }
 
 string ResourceManager::getResourceStatus() {

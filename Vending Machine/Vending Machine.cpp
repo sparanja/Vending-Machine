@@ -12,72 +12,101 @@
 using namespace std;
 
 void maintain(ResourceManager*& resources) {
-    int code = 0;
+    int code;
+    string codeStr;
     do {
-        cout << "Choose Operation:\n0.Exit\n1.Create\n2.Update\n3.Delete\n4.Reset\n5.Print status";
-        cin >> code;
-        switch (code) {
-        case 0:
-            break;
-        case 1: resources->create(false);
-            break;
-        case 2: resources->update();
-            break;
-        case 3: resources->delete_item();
-            break;
-        case 4: resources->reset();
-            break;
-        case 5: resources->printItems();
-            break;
-        default:
-            cout << "Choice doesn't exist. Please re-enter choice.";
-            break;
+        try
+        {
+            std::cout << "Choose Operation:\n0.Exit\n1.Create\n2.Update\n3.Delete\n4.Reset\n5.Get All"
+                         "\n6. Get By ID\n7.Delete All";
+            getline(cin, codeStr, '\n');
+            code = stoi(codeStr);
+            switch (code) {
+            case 0:
+                break;
+            case 1: resources->create(false);
+                break;
+            case 2: resources->update();
+                break;
+            case 3: resources->delete_item();
+                break;
+            case 4: resources->reset();
+                break;
+            case 5: resources->printItems();
+                break;
+            case 6: resources->getByID();
+                break;
+            case 7: resources->deleteAll();
+                break;
+            default:
+                std::cout << "Choice doesn't exist. Please re-enter choice.";
+                break;
+            }
         }
+        catch (const std::exception&)
+        {
+            std::cout << "Exception occured while parsing, make sure to enter a number.";
+            code = 1;
+        }
+        
     } while (code != 0);
 }
 
 void consume(ResourceManager*& resources) {
-    int code = 0;
+    int code;
+    string codeStr;
     do {
-        cout << "::::::::::::::::::::::::::::::::::::::::::"<<endl;
-        cout << "WELCOME TO THE BEVERAGE VENDING MACHINE!" << endl;
-        cout << "Choose your option:\n0.Exit\n1.View Items\n2.Buy Items\n3.Add Credit\n4.Print All Data";
-        cin >> code;
-        switch (code) {
-        case 0:
-            break;
-        case 1: resources->viewItemSet();
-            break;
-        case 2: resources->buyItems();
-            break;
-        case 3: resources->rechargeAccount();
-            break;
-        case 4: resources->printItems();
-            break;
-        default:
-            cout << "Choice doesn't exist. Please re-enter choice.";
-            break;
+        try
+        {
+            std::cout << "::::::::::::::::::::::::::::::::::::::::::" << endl;
+            std::cout << "WELCOME TO THE BEVERAGE VENDING MACHINE!" << endl;
+            std::cout << "Choose your option:\n0.Exit\n1.View Items\n2.Buy Items\n3.Add Credit\n4.Print All Data";
+            getline(cin, codeStr, '\n');
+            code = stoi(codeStr);
+            switch (code) {
+            case 0:
+                break;
+            case 1: resources->viewItemSet();
+                break;
+            case 2: resources->buyItems();
+                break;
+            case 3: resources->rechargeAccount();
+                break;
+            case 4: resources->printItems();
+                break;
+            default:
+                std::cout << "Choice doesn't exist. Please re-enter choice.";
+                break;
+            }
         }
+        catch (const std::exception&)
+        {
+            std::cout << "Exception occured while parsing, make sure to enter a number.";
+        }
+        
     } while (code != 0);
 }
 
 int main()
 {
-    cout << "Welcome to Beverage Dispenser API!\n";
-    cout << "::::::::::::::::::::::::::::::::::\n";
-    cout << "Initializing Beverage Dispenser with items..." << endl;
-    cout << "::::::::::::::::::::::::::::::::::\n";
+    std::cout << "Welcome to Beverage Dispenser API!\n";
+    std::cout << "::::::::::::::::::::::::::::::::::\n";
+    std::cout << "Initializing Beverage Dispenser with items..." << endl;
+    std::cout << "::::::::::::::::::::::::::::::::::\n";
 
     ResourceManager* resources = ResourceManager::getInstance();
     //Fills the vending machine with beverages.
     resources->fillMachine();
     resources->printItems();
-
-    int code = 0;
+    int code;
     do {
-        cout << "Choose Role:\n0.Exit\n1.Operator\n2.Consumer";
-        cin >> code;
-        switch (code) {
+        try
+        {
+            string codeStr;
+            std::cout << "Choose Role:\n0.Exit\n1.Operator\n2.Consumer";
+            getline(cin, codeStr, '\n');
+            code = stoi(codeStr);
+            switch (code) {
             case 0:
                 break;
             case 1: maintain(resources);
@@ -85,13 +114,18 @@ int main()
             case 2: consume(resources);
                 break;
             default:
-                cout<<"Choice doesn't exist. Please re-enter choice.";
+                std::cout << "Choice doesn't exist. Please re-enter choice.";
                 break;
+            }
+        }
+        catch (const std::exception&)
+        {
+            std::cout << "Exception occured while parsing, make sure to enter a number.";
         }
     } while (code != 0);
 
-    cout << "::::::::::::::::::::::::::::::::::\n";
-    cout << "Thanks for using the vending machine!"<<endl;
+    std::cout << "::::::::::::::::::::::::::::::::::\n";
+    std::cout << "Thanks for using the vending machine!"<<endl;
 
     return 0;
 }
