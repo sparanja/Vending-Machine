@@ -18,6 +18,20 @@ Complete Backend Design of a Beverage Vending Machine written in C++
 * The application serves in 2 modes namely
                     * Maintainance mode (perform CRUD)
                     * Consumer Mode (Buy Items, add Credit etc.)
+* List of functions available for Maintainance Mode:
+                    * Create
+                    * Update
+                    * Delete
+                    * Reset
+                    * Get All
+                    * Get By ID
+                    * Delete All
+                    * Delete By ID
+* List of functions available for Consumer Mode:
+                    * View Items
+                    * Buy Items
+                    * Recharge Credit
+                    * View Details
 * Things to improve
       * Use of generics to create modular code.
       * Better validation and algoritms for search.
